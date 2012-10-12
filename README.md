@@ -22,7 +22,7 @@ fclose($handle);
 Requirements
 ------------
 
-* PHP 5.3 or higher (it should work on any PHP5, but has not been tested on earlier versions) 
+* PHP 5.3 or higher
 
 License
 -------
