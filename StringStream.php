@@ -70,6 +70,7 @@
           break;
 
         case 'r+':
+        case 'c+':
           $this->read = true;
           $this->write = true;
           $this->position = 0;
@@ -107,14 +108,8 @@
           $this->position = 0;
           break;
 
-        case 'c+':
-          $this->read = true;
-          $this->write = true;
-          $this->position = 0;
-          break;
-
         default:
-          trigger_error('Invalid mode specified', E_ERROR);
+          trigger_error('Invalid mode specified (mode specified makes no sense for this stream implementation)', E_ERROR);
       }
 
 
@@ -127,22 +122,32 @@
      * @return string
      */
     function stream_read($aBytes) {
-      $read = substr($this->string, $this->position, $aBytes);
-      $this->position += strlen($read);
-      return $read;
+      if ($this->read) {
+        $read = substr($this->string, $this->position, $aBytes);
+        $this->position += strlen($read);
+        return $read;
+      }
+      else {
+        return false;
+      }
     }
 
     /**
      * Write to stream
      * @param string $aData data to write
-     * @return string
+     * @return int
      */
     function stream_write($aData) {
-      $left = substr($this->string, 0, $this->position);
-      $right = substr($this->string, $this->position + strlen($aData));
-      $this->string = $left . $aData . $right;
-      $this->position += strlen($aData);
-      return strlen($aData);
+      if ($this->write) {
+        $left = substr($this->string, 0, $this->position);
+        $right = substr($this->string, $this->position + strlen($aData));
+        $this->string = $left . $aData . $right;
+        $this->position += strlen($aData);
+        return strlen($aData);
+      }
+      else {
+        return 0;
+      }
     }
 
     /**
@@ -170,33 +175,25 @@
     function stream_seek($aOffset, $aWhence) {
       switch ($aWhence) {
         case SEEK_SET:
-          if ($aOffset < strlen($this->string) && $aOffset >= 0) {
-            $this->position = $aOffset;
-            return true;
+          $this->position = $aOffset;
+          if ($aOffset > strlen($this->string)) {
+            $this->stream_truncate($aOffset);
           }
-          else {
-            return false;
-          }
+          return true;
           break;
 
+        //XXX Code coverage testing shows PHP truncates automatically for SEEK_CUR
         case SEEK_CUR:
-          if ($aOffset >= 0) {
-             $this->position += $aOffset;
-             return true;
-          }
-          else {
-            return false;
-          }
+          $this->position += $aOffset;
+          return true;
           break;
 
         case SEEK_END:
-          if (strlen($this->string) + $aOffset >= 0) {
-            $this->position = strlen($this->string) + $aOffset;
-            return true;
+          $this->position = strlen($this->string) + $aOffset;
+          if (($this->position + $aOffset) > strlen($this->string)) {
+            $this->stream_truncate(strlen($this->string) + $aOffset);
           }
-          else {
-            return false;
-          }
+          return true;
           break;
 
         default:
@@ -213,7 +210,7 @@
         $this->string = substr($this->string, 0, $aSize);
       }
       else if (strlen($this->string) < $aSize) {
-        $this->string = str_pad($this->string, $aSize, '\0', STR_PAD_RIGHT);
+        $this->string = str_pad($this->string, $aSize, "\0", STR_PAD_RIGHT);
       }
       return true;
     }
