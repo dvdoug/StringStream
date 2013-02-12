@@ -2,7 +2,9 @@ StringStream
 ============
 
 Stream wrapper for strings. Basically, like php://temp except that you can have multiple streams
-at once, and can pre-initialise the contents. 
+at once, and can pre-initialise the contents.
+
+[![Build Status](https://travis-ci.org/dvdoug/StringStream.png)](https://travis-ci.org/dvdoug/StringStream) 
 
 Usage
 -----
