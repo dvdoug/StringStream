@@ -164,3 +164,4 @@ pip-log.txt
 
 /vendor
 /composer.lock
+/tests/coverage
