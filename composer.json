@@ -1,0 +1,24 @@
+{
+    "name": "dvdoug/stringstream",
+    "description": "Stream wrapper for strings. Basically, like php://temp except that you can have multiple streams",
+    "keywords": ["string","stream"],
+    "homepage": "https://github.com/dvdoug/StringStream",
+    "authors": [
+        {
+            "name": "Doug Wright",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "phpunit/PHPUnit": ">=3.7"
+    },
+    "autoload": {
+        "psr-0": {
+            "DVDoug\\StringStream": ""
+        }
+    }
+}
