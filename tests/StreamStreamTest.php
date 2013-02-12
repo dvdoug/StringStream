@@ -115,6 +115,11 @@
     }
     
     public function testTruncateExtension() {
+    
+      if (!version_compare(PHP_VERSION, '5.4.0', '>=')) {
+        $this->markTestSkipped('Truncate support introduced in PHP 5.4');
+      }
+        
       $handle = fopen('string://foobar', 'r+');
       ftruncate($handle, 9);
 
