@@ -20,5 +20,6 @@
         "psr-0": {
             "DVDoug\\StringStream": ""
         }
-    }
+    },
+    "target-dir": "DVDoug/StringStream"
 }
