@@ -2,7 +2,7 @@
 
   require_once(__DIR__.'/../StringStream.php');
 
-  class test extends \PHPUnit_Framework_TestCase {
+  class StringStreamTest extends \PHPUnit_Framework_TestCase {
     
     public static function setUpBeforeClass() {
       stream_wrapper_register('string', '\DVDoug\StringStream\StringStream');
