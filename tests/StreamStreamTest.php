@@ -1,7 +1,5 @@
 <?php
 
-  namespace PHPCoord;
-
   require_once(__DIR__.'/../StringStream.php');
 
   class test extends \PHPUnit_Framework_TestCase {
@@ -114,12 +112,11 @@
       fclose($handle);
     }
     
+    /**
+     * @requires PHP 5.4
+     */
     public function testTruncateExtension() {
     
-      if (!version_compare(PHP_VERSION, '5.4.0', '>=')) {
-        $this->markTestSkipped('Truncate support introduced in PHP 5.4');
-      }
-        
       $handle = fopen('string://foobar', 'r+');
       ftruncate($handle, 9);
 
