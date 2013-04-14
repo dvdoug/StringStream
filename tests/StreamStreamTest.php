@@ -202,5 +202,15 @@
       }
 
     }
-  
+
+    public function testOtherWrapperName() {
+      stream_wrapper_register('mystring', '\DVDoug\StringStream\StringStream');
+
+      $handle = fopen('mystring://foobar', 'r');
+
+      self::assertEquals('foobar', stream_get_contents($handle));
+
+      stream_wrapper_unregister('mystring');
+    }
+
   }

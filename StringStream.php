@@ -58,7 +58,7 @@
      * @return boolean
      */
     function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath) {
-      $this->string = substr($aPath, 9);
+      $this->string = substr($aPath, strpos($aPath, '://') + 3);
       $this->options = $aOptions;
 
       switch ($aMode) {
