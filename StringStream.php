@@ -32,6 +32,12 @@
     private $write;
 
     /**
+     * Whether this stream should have UNIX-style newlines converted to Windows-style
+     * @var boolean
+     */
+    private $normaliseForWin = false;
+
+    /**
      * Options
      * @var int
      */
@@ -61,7 +67,15 @@
       $this->string = substr($aPath, strpos($aPath, '://') + 3);
       $this->options = $aOptions;
 
-      switch ($aMode) {
+      if (strpos($aMode, 't') && defined('PHP_WINDOWS_VERSION_MAJOR')) {
+      	$this->normaliseForWin = true;
+      	$this->string = preg_replace('/(?<!\r)\n/', "\r\n", $this->string);
+      }
+
+      // strip binary/text flags from mode for comparison
+      $mode = strtr($aMode, array('b' => '', 't' => ''));
+
+      switch ($mode) {
 
         case 'r':
           $this->read = true;
@@ -112,6 +126,9 @@
           if ($this->options & STREAM_REPORT_ERRORS) {
             trigger_error('Invalid mode specified (mode specified makes no sense for this stream implementation)', E_ERROR);
           }
+          else {
+          	return false;
+          }
       }
 
 
@@ -140,12 +157,20 @@
      * @return int
      */
     function stream_write($aData) {
+
+      if ($this->normaliseForWin) {
+    	$data = preg_replace('/(?<!\r)\n/', "\r\n", $aData);
+      }
+      else {
+      	$data = $aData;
+      }
+
       if ($this->write) {
         $left = substr($this->string, 0, $this->position);
-        $right = substr($this->string, $this->position + strlen($aData));
-        $this->string = $left . $aData . $right;
-        $this->position += strlen($aData);
-        return strlen($aData);
+        $right = substr($this->string, $this->position + strlen($data));
+        $this->string = $left . $data . $right;
+        $this->position += strlen($data);
+        return strlen($data);
       }
       else {
         return 0;

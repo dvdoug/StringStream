@@ -125,13 +125,6 @@
       fclose($handle);
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Error
-     */
-    public function testWriteExclusive() {
-      $handle = fopen('string://foobar', 'x+');
-    }
-
     public function testSeekCurPastEnd() {
       $handle = fopen('string://foobar', 'r+');
       $ok = fseek($handle, 8, SEEK_CUR);
@@ -219,7 +212,7 @@
       $textHandle = fopen("string://foobar\n", 'rt');
 
       self::assertEquals(7, strlen(stream_get_contents($binaryHandle)));
-      self::assertEquals(8, strlen(stream_get_contents($textHandle)));
+      self::assertEquals(6 + strlen(PHP_EOL), strlen(stream_get_contents($textHandle)));
     }
 
   }
