@@ -109,7 +109,9 @@
           break;
 
         default:
-          trigger_error('Invalid mode specified (mode specified makes no sense for this stream implementation)', E_ERROR);
+          if ($this->options & STREAM_REPORT_ERRORS) {
+            trigger_error('Invalid mode specified (mode specified makes no sense for this stream implementation)', E_ERROR);
+          }
       }
 
 
