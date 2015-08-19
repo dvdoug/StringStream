@@ -8,10 +8,12 @@ php:
   - 5.6
   - 7.0
   - hhvm
+  - hhvm-nightly
 
 matrix:
     allow_failures:
         - php: hhvm
+        - php: hhvm-nightly
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
