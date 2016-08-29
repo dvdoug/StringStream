@@ -7,8 +7,8 @@ php:
   - 5.5
   - 5.6
   - 7.0
+  - 7.1
   - hhvm
-  - hhvm-nightly
 
 before_script:
   - composer self-update
@@ -17,7 +17,6 @@ before_script:
 matrix:
     allow_failures:
         - php: hhvm
-        - php: hhvm-nightly
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
