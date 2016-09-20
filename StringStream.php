@@ -63,7 +63,7 @@ class StringStream {
      * @param string $aOpenedPath
      * @return boolean
      */
-    function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath) {
+    public function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath) {
         $this->string = substr($aPath, strpos($aPath, '://') + 3);
         $this->options = $aOptions;
 
@@ -142,7 +142,7 @@ class StringStream {
      * @param int $aBytes number of bytes to return
      * @return string
      */
-    function stream_read($aBytes) {
+    public function stream_read($aBytes) {
         if ($this->read) {
             $read = substr($this->string, $this->position, $aBytes);
             $this->position += strlen($read);
@@ -158,7 +158,7 @@ class StringStream {
      * @param string $aData data to write
      * @return int
      */
-    function stream_write($aData) {
+    public function stream_write($aData) {
 
         if ($this->normaliseForWin) {
             $data = preg_replace('/(?<!\r)\n/', "\r\n", $aData);
@@ -182,7 +182,7 @@ class StringStream {
      * Return current position
      * @return int
      */
-    function stream_tell() {
+    public function stream_tell() {
         return $this->position;
     }
 
@@ -190,7 +190,7 @@ class StringStream {
      * Return if EOF
      * @return boolean
      */
-    function stream_eof() {
+    public function stream_eof() {
         return $this->position >= strlen($this->string);
     }
 
@@ -200,7 +200,7 @@ class StringStream {
      * @param int $aWhence
      * @return boolean
      */
-    function stream_seek($aOffset, $aWhence) {
+    public function stream_seek($aOffset, $aWhence) {
         switch ($aWhence) {
             case SEEK_SET:
                 $this->position = $aOffset;
