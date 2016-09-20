@@ -4,14 +4,14 @@
  * @package StringStream
  * @author Doug Wright
  */
-  namespace DVDoug\StringStream;
+namespace DVDoug\StringStream;
 
-  /**
-   * Stream wrapper for strings
-   * @author Doug Wright
-   * @package StringStream
-   */
-  class StringStream {
+/**
+ * Stream wrapper for strings
+ * @author Doug Wright
+ * @package StringStream
+ */
+class StringStream {
 
     /**
      * Content of stream
@@ -64,75 +64,77 @@
      * @return boolean
      */
     function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath) {
-      $this->string = substr($aPath, strpos($aPath, '://') + 3);
-      $this->options = $aOptions;
+        $this->string = substr($aPath, strpos($aPath, '://') + 3);
+        $this->options = $aOptions;
 
-      if (strpos($aMode, 't') && defined('PHP_WINDOWS_VERSION_MAJOR')) {
-      	$this->normaliseForWin = true;
-      	$this->string = preg_replace('/(?<!\r)\n/', "\r\n", $this->string);
-      }
+        if (strpos($aMode, 't') && defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->normaliseForWin = true;
+            $this->string = preg_replace('/(?<!\r)\n/', "\r\n", $this->string);
+        }
 
-      // strip binary/text flags from mode for comparison
-      $mode = strtr($aMode, array('b' => '', 't' => ''));
+        // strip binary/text flags from mode for comparison
+        $mode = strtr($aMode, array('b' => '', 't' => ''));
 
-      switch ($mode) {
+        switch ($mode) {
 
-        case 'r':
-          $this->read = true;
-          $this->write = false;
-          $this->position = 0;
-          break;
+            case 'r':
+                $this->read = true;
+                $this->write = false;
+                $this->position = 0;
+                break;
 
-        case 'r+':
-        case 'c+':
-          $this->read = true;
-          $this->write = true;
-          $this->position = 0;
-          break;
+            case 'r+':
+            case 'c+':
+                $this->read = true;
+                $this->write = true;
+                $this->position = 0;
+                break;
 
-        case 'w':
-          $this->read = false;
-          $this->write = true;
-          $this->position = 0;
-          $this->stream_truncate(0);
-          break;
+            case 'w':
+                $this->read = false;
+                $this->write = true;
+                $this->position = 0;
+                $this->stream_truncate(0);
+                break;
 
-        case 'w+':
-          $this->read = true;
-          $this->write = true;
-          $this->position = 0;
-          $this->stream_truncate(0);
-          break;
+            case 'w+':
+                $this->read = true;
+                $this->write = true;
+                $this->position = 0;
+                $this->stream_truncate(0);
+                break;
 
-        case 'a':
-          $this->read = false;
-          $this->write = true;
-          $this->position = strlen($this->string);
-          break;
+            case 'a':
+                $this->read = false;
+                $this->write = true;
+                $this->position = strlen($this->string);
+                break;
 
-        case 'a+':
-          $this->read = true;
-          $this->write = true;
-          $this->position = strlen($this->string);
-          break;
+            case 'a+':
+                $this->read = true;
+                $this->write = true;
+                $this->position = strlen($this->string);
+                break;
 
-        case 'c':
-          $this->read = false;
-          $this->write = true;
-          $this->position = 0;
-          break;
+            case 'c':
+                $this->read = false;
+                $this->write = true;
+                $this->position = 0;
+                break;
 
-        default:
-          if ($this->options & STREAM_REPORT_ERRORS) {
-            trigger_error('Invalid mode specified (mode specified makes no sense for this stream implementation)', E_ERROR);
-          }
-          else {
-          	return false;
-          }
-      }
+            default:
+                if ($this->options & STREAM_REPORT_ERRORS) {
+                    trigger_error(
+                        'Invalid mode specified (mode specified makes no sense for this stream implementation)',
+                        E_ERROR
+                    );
+                } else {
+                    return false;
+                }
+        }
 
 
-      return true;
+        return true;
     }
 
     /**
@@ -141,14 +143,14 @@
      * @return string
      */
     function stream_read($aBytes) {
-      if ($this->read) {
-        $read = substr($this->string, $this->position, $aBytes);
-        $this->position += strlen($read);
-        return $read;
-      }
-      else {
-        return false;
-      }
+        if ($this->read) {
+            $read = substr($this->string, $this->position, $aBytes);
+            $this->position += strlen($read);
+
+            return $read;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -158,23 +160,22 @@
      */
     function stream_write($aData) {
 
-      if ($this->normaliseForWin) {
-    	$data = preg_replace('/(?<!\r)\n/', "\r\n", $aData);
-      }
-      else {
-      	$data = $aData;
-      }
+        if ($this->normaliseForWin) {
+            $data = preg_replace('/(?<!\r)\n/', "\r\n", $aData);
+        } else {
+            $data = $aData;
+        }
 
-      if ($this->write) {
-        $left = substr($this->string, 0, $this->position);
-        $right = substr($this->string, $this->position + strlen($data));
-        $this->string = $left . $data . $right;
-        $this->position += strlen($data);
-        return strlen($data);
-      }
-      else {
-        return 0;
-      }
+        if ($this->write) {
+            $left = substr($this->string, 0, $this->position);
+            $right = substr($this->string, $this->position + strlen($data));
+            $this->string = $left.$data.$right;
+            $this->position += strlen($data);
+
+            return strlen($data);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -182,7 +183,7 @@
      * @return int
      */
     function stream_tell() {
-      return $this->position;
+        return $this->position;
     }
 
     /**
@@ -190,7 +191,7 @@
      * @return boolean
      */
     function stream_eof() {
-      return $this->position >= strlen($this->string);
+        return $this->position >= strlen($this->string);
     }
 
     /**
@@ -200,32 +201,35 @@
      * @return boolean
      */
     function stream_seek($aOffset, $aWhence) {
-      switch ($aWhence) {
-        case SEEK_SET:
-          $this->position = $aOffset;
-          if ($aOffset > strlen($this->string)) {
-            $this->stream_truncate($aOffset);
-          }
-          return true;
-          break;
+        switch ($aWhence) {
+            case SEEK_SET:
+                $this->position = $aOffset;
+                if ($aOffset > strlen($this->string)) {
+                    $this->stream_truncate($aOffset);
+                }
 
-        //XXX Code coverage testing shows PHP truncates automatically for SEEK_CUR
-        case SEEK_CUR:
-          $this->position += $aOffset;
-          return true;
-          break;
+                return true;
+                break;
 
-        case SEEK_END:
-          $this->position = strlen($this->string) + $aOffset;
-          if (($this->position + $aOffset) > strlen($this->string)) {
-            $this->stream_truncate(strlen($this->string) + $aOffset);
-          }
-          return true;
-          break;
+            //XXX Code coverage testing shows PHP truncates automatically for SEEK_CUR
+            case SEEK_CUR:
+                $this->position += $aOffset;
 
-        default:
-          return false;
-      }
+                return true;
+                break;
+
+            case SEEK_END:
+                $this->position = strlen($this->string) + $aOffset;
+                if (($this->position + $aOffset) > strlen($this->string)) {
+                    $this->stream_truncate(strlen($this->string) + $aOffset);
+                }
+
+                return true;
+                break;
+
+            default:
+                return false;
+        }
     }
 
     /**
@@ -233,13 +237,15 @@
      * @param int $aSize
      */
     public function stream_truncate($aSize) {
-      if (strlen($this->string) > $aSize) {
-        $this->string = substr($this->string, 0, $aSize);
-      }
-      else if (strlen($this->string) < $aSize) {
-        $this->string = str_pad($this->string, $aSize, "\0", STR_PAD_RIGHT);
-      }
-      return true;
+        if (strlen($this->string) > $aSize) {
+            $this->string = substr($this->string, 0, $aSize);
+        } else {
+            if (strlen($this->string) < $aSize) {
+                $this->string = str_pad($this->string, $aSize, "\0", STR_PAD_RIGHT);
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -247,19 +253,21 @@
      * @return array
      */
     public function stream_stat() {
-      return array('dev'    => 0,
-                   'ino'    => 0,
-                   'mode'   => 0,
-                   'nlink'  => 0,
-                   'uid'    => 0,
-                   'gid'    => 0,
-                   'rdev'   => 0,
-                   'size'   => strlen($this->string),
-                   'atime'  => 0,
-                   'mtime'  => 0,
-                   'ctime'  => 0,
-                   'blksize' => -1,
-                   'blocks'  => -1);
+        return array(
+            'dev' => 0,
+            'ino' => 0,
+            'mode' => 0,
+            'nlink' => 0,
+            'uid' => 0,
+            'gid' => 0,
+            'rdev' => 0,
+            'size' => strlen($this->string),
+            'atime' => 0,
+            'mtime' => 0,
+            'ctime' => 0,
+            'blksize' => -1,
+            'blocks' => -1,
+        );
     }
 
     /**
@@ -269,7 +277,8 @@
      * @return array
      */
     public function url_stat($aPath, $aOptions) {
-      $resource = fopen($aPath, 'r');
-      return fstat($resource);
+        $resource = fopen($aPath, 'r');
+
+        return fstat($resource);
     }
-  }
+}
