@@ -204,33 +204,36 @@ class StringStream {
         switch ($aWhence) {
             case SEEK_SET:
                 $this->position = $aOffset;
-                if ($this->position > strlen($this->string)) {
-                    $this->stream_truncate($this->position);
-                }
+                $this->truncate_after_seek();
 
                 return true;
                 break;
 
             case SEEK_CUR:
                 $this->position += $aOffset;
-                if ($this->position > strlen($this->string)) {
-                    $this->stream_truncate($this->position);
-                }
+                $this->truncate_after_seek();
 
                 return true;
                 break;
 
             case SEEK_END:
                 $this->position = strlen($this->string) + $aOffset;
-                if ($this->position > strlen($this->string)) {
-                    $this->stream_truncate($this->position);
-                }
+                $this->truncate_after_seek();
 
                 return true;
                 break;
 
             default:
                 return false;
+        }
+    }
+
+    /**
+     * If we've seeked past the end of file, auto truncate
+     */
+    protected function truncate_after_seek() {
+        if ($this->position > strlen($this->string)) {
+            $this->stream_truncate($this->position);
         }
     }
 
