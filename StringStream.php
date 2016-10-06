@@ -204,24 +204,26 @@ class StringStream {
         switch ($aWhence) {
             case SEEK_SET:
                 $this->position = $aOffset;
-                if ($aOffset > strlen($this->string)) {
-                    $this->stream_truncate($aOffset);
+                if ($this->position > strlen($this->string)) {
+                    $this->stream_truncate($this->position);
                 }
 
                 return true;
                 break;
 
-            //XXX Code coverage testing shows PHP truncates automatically for SEEK_CUR
             case SEEK_CUR:
                 $this->position += $aOffset;
+                if ($this->position > strlen($this->string)) {
+                    $this->stream_truncate($this->position);
+                }
 
                 return true;
                 break;
 
             case SEEK_END:
                 $this->position = strlen($this->string) + $aOffset;
-                if (($this->position + $aOffset) > strlen($this->string)) {
-                    $this->stream_truncate(strlen($this->string) + $aOffset);
+                if ($this->position > strlen($this->string)) {
+                    $this->stream_truncate($this->position);
                 }
 
                 return true;
