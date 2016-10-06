@@ -20,7 +20,7 @@ matrix:
 
 # omitting "script:" will default to phpunit
 # use the $DB env variable to determine the phpunit.xml to use
-script: phpunit --coverage-text tests
+script: phpunit --coverage-text --coverage-clover=coverage.clover tests
 
 after_script:
   - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;'
