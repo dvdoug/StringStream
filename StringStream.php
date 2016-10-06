@@ -241,10 +241,8 @@ class StringStream {
     public function stream_truncate($aSize) {
         if (strlen($this->string) > $aSize) {
             $this->string = substr($this->string, 0, $aSize);
-        } else {
-            if (strlen($this->string) < $aSize) {
-                $this->string = str_pad($this->string, $aSize, "\0", STR_PAD_RIGHT);
-            }
+        } elseif (strlen($this->string) < $aSize) {
+            $this->string = str_pad($this->string, $aSize, "\0", STR_PAD_RIGHT);
         }
 
         return true;
