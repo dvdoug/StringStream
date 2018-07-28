@@ -28,7 +28,7 @@ fclose($handle);
 Requirements
 ------------
 
-* PHP 5.3 or higher (including PHP7 and HHVM)
+* PHP 5.3 or higher (including PHP7)
 
 License
 -------
