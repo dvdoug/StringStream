@@ -28,6 +28,7 @@ install:
     fi;
 
 script:
+  - vendor/bin/php-cs-fixer fix --verbose --dry-run --diff --diff-format=udiff --allow-risky=yes
   - |
     if [ "$code_coverage" = "1" ]; then
       phpdbg -qrr vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover tests;

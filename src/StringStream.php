@@ -1,69 +1,73 @@
 <?php
 /**
- * Stream wrapper for strings
- * @package StringStream
+ * Stream wrapper for strings.
  * @author Doug Wright
  */
+
+declare(strict_types=1);
+
 namespace DVDoug\StringStream;
 
-/**
- * Stream wrapper for strings
- * @author Doug Wright
- * @package StringStream
- */
-class StringStream {
+use function fopen;
+use function substr;
+use function strlen;
 
+class StringStream
+{
     /**
-     * Content of stream
+     * Content of stream.
      * @var string
      */
     private $string;
 
     /**
-     * Whether this stream can be read
-     * @var boolean
+     * Whether this stream can be read.
+     * @var bool
      */
     private $read;
 
     /**
-     * Whether this stream can be written
-     * @var boolean
+     * Whether this stream can be written.
+     * @var bool
      */
     private $write;
 
     /**
-     * Whether this stream should have UNIX-style newlines converted to Windows-style
-     * @var boolean
+     * Whether this stream should have UNIX-style newlines converted to Windows-style.
+     * @var bool
      */
     private $normaliseForWin = false;
 
     /**
-     * Options
+     * Options.
      * @var int
      */
     private $options;
 
     /**
-     * Current position within stream
+     * Current position within stream.
      * @var int
      */
     private $position;
 
     /**
-     * Context
+     * Context.
+     *
      * @var resource
      */
     public $context;
 
     /**
-     * Open stream
+     * Open stream.
      * @param string $aPath
      * @param string $aMode
-     * @param int $aOptions
+     * @param int    $aOptions
      * @param string $aOpenedPath
-     * @return boolean
+     *
+     * @return bool
      */
-    public function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath) {
+    public function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath): bool
+    {
         $this->string = substr($aPath, strpos($aPath, '://') + 3);
         $this->options = $aOptions;
 
@@ -73,10 +77,9 @@ class StringStream {
         }
 
         // strip binary/text flags from mode for comparison
-        $mode = strtr($aMode, array('b' => '', 't' => ''));
+        $mode = strtr($aMode, ['b' => '', 't' => '']);
 
         switch ($mode) {
-
             case 'r':
                 $this->read = true;
                 $this->write = false;
@@ -133,16 +136,18 @@ class StringStream {
                 }
         }
 
-
         return true;
     }
 
     /**
-     * Read from stream
+     * Read from stream.
+     *
      * @param int $aBytes number of bytes to return
-     * @return string
+     *
+     * @return int|false
      */
-    public function stream_read($aBytes) {
+    public function stream_read($aBytes)
+    {
         if ($this->read) {
             $read = substr($this->string, $this->position, $aBytes);
             $this->position += strlen($read);
@@ -154,12 +159,14 @@ class StringStream {
     }
 
     /**
-     * Write to stream
+     * Write to stream.
+     *
      * @param string $aData data to write
+     *
      * @return int
      */
-    public function stream_write($aData) {
-
+    public function stream_write($aData): int
+    {
         if ($this->normaliseForWin) {
             $data = preg_replace('/(?<!\r)\n/', "\r\n", $aData);
         } else {
@@ -169,7 +176,7 @@ class StringStream {
         if ($this->write) {
             $left = substr($this->string, 0, $this->position);
             $right = substr($this->string, $this->position + strlen($data));
-            $this->string = $left.$data.$right;
+            $this->string = $left . $data . $right;
             $this->position += strlen($data);
 
             return strlen($data);
@@ -179,28 +186,35 @@ class StringStream {
     }
 
     /**
-     * Return current position
+     * Return current position.
+     *
      * @return int
      */
-    public function stream_tell() {
+    public function stream_tell(): int
+    {
         return $this->position;
     }
 
     /**
-     * Return if EOF
-     * @return boolean
+     * Return if EOF.
+     *
+     * @return bool
      */
-    public function stream_eof() {
+    public function stream_eof(): bool
+    {
         return $this->position >= strlen($this->string);
     }
 
     /**
-     * Seek to new position
+     * Seek to new position.
+     *
      * @param int $aOffset
      * @param int $aWhence
-     * @return boolean
+     *
+     * @return bool
      */
-    public function stream_seek($aOffset, $aWhence) {
+    public function stream_seek($aOffset, $aWhence): bool
+    {
         switch ($aWhence) {
             case SEEK_SET:
                 $this->position = $aOffset;
@@ -229,19 +243,14 @@ class StringStream {
     }
 
     /**
-     * If we've seeked past the end of file, auto truncate
-     */
-    protected function truncate_after_seek() {
-        if ($this->position > strlen($this->string)) {
-            $this->stream_truncate($this->position);
-        }
-    }
-
-    /**
-     * Truncate to given size
+     * Truncate to given size.
+     *
      * @param int $aSize
+     *
+     * @return bool
      */
-    public function stream_truncate($aSize) {
+    public function stream_truncate($aSize): bool
+    {
         if (strlen($this->string) > $aSize) {
             $this->string = substr($this->string, 0, $aSize);
         } elseif (strlen($this->string) < $aSize) {
@@ -252,11 +261,13 @@ class StringStream {
     }
 
     /**
-     * Return info about stream
+     * Return info about stream.
+     *
      * @return array
      */
-    public function stream_stat() {
-        return array(
+    public function stream_stat(): array
+    {
+        return [
             'dev' => 0,
             'ino' => 0,
             'mode' => 0,
@@ -270,18 +281,31 @@ class StringStream {
             'ctime' => 0,
             'blksize' => -1,
             'blocks' => -1,
-        );
+        ];
     }
 
     /**
-     * Return info about stream
+     * Return info about stream.
+     *
      * @param string $aPath
-     * @param array $aOptions
+     * @param array  $aOptions
+     *
      * @return array
      */
-    public function url_stat($aPath, $aOptions) {
-        $resource = fopen($aPath, 'r');
+    public function url_stat($aPath, $aOptions): array
+    {
+        $resource = fopen($aPath, 'rb');
 
         return fstat($resource);
+    }
+
+    /**
+     * If we've seeked past the end of file, auto truncate.
+     */
+    protected function truncate_after_seek(): void
+    {
+        if ($this->position > strlen($this->string)) {
+            $this->stream_truncate($this->position);
+        }
     }
 }
