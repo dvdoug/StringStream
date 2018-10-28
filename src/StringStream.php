@@ -8,9 +8,11 @@ declare(strict_types=1);
 
 namespace DVDoug\StringStream;
 
+use function defined;
 use function fopen;
-use function substr;
 use function strlen;
+use function strpos;
+use function substr;
 
 class StringStream
 {
@@ -71,7 +73,7 @@ class StringStream
         $this->string = substr($aPath, strpos($aPath, '://') + 3);
         $this->options = $aOptions;
 
-        if (strpos($aMode, 't') && defined('PHP_WINDOWS_VERSION_MAJOR')) {
+        if (defined('PHP_WINDOWS_VERSION_MAJOR') && strpos($aMode, 't')) {
             $this->normaliseForWin = true;
             $this->string = preg_replace('/(?<!\r)\n/', "\r\n", $this->string);
         }
@@ -153,9 +155,9 @@ class StringStream
             $this->position += strlen($read);
 
             return $read;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -180,9 +182,9 @@ class StringStream
             $this->position += strlen($data);
 
             return strlen($data);
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     /**
