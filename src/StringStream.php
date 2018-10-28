@@ -1,6 +1,7 @@
 <?php
 /**
  * Stream wrapper for strings.
+ *
  * @author Doug Wright
  */
 
@@ -9,43 +10,49 @@ declare(strict_types=1);
 namespace DVDoug\StringStream;
 
 use function fopen;
-use function substr;
 use function strlen;
+use function substr;
 
 class StringStream
 {
     /**
      * Content of stream.
+     *
      * @var string
      */
     private $string;
 
     /**
      * Whether this stream can be read.
+     *
      * @var bool
      */
     private $read;
 
     /**
      * Whether this stream can be written.
+     *
      * @var bool
      */
     private $write;
 
     /**
      * Whether this stream should have UNIX-style newlines converted to Windows-style.
+     *
      * @var bool
      */
     private $normaliseForWin = false;
 
     /**
      * Options.
+     *
      * @var int
      */
     private $options;
 
     /**
      * Current position within stream.
+     *
      * @var int
      */
     private $position;
@@ -59,6 +66,7 @@ class StringStream
 
     /**
      * Open stream.
+     *
      * @param string $aPath
      * @param string $aMode
      * @param int    $aOptions
@@ -176,7 +184,7 @@ class StringStream
         if ($this->write) {
             $left = substr($this->string, 0, $this->position);
             $right = substr($this->string, $this->position + strlen($data));
-            $this->string = $left . $data . $right;
+            $this->string = $left.$data.$right;
             $this->position += strlen($data);
 
             return strlen($data);
@@ -268,19 +276,19 @@ class StringStream
     public function stream_stat(): array
     {
         return [
-            'dev' => 0,
-            'ino' => 0,
-            'mode' => 0,
-            'nlink' => 0,
-            'uid' => 0,
-            'gid' => 0,
-            'rdev' => 0,
-            'size' => strlen($this->string),
-            'atime' => 0,
-            'mtime' => 0,
-            'ctime' => 0,
+            'dev'     => 0,
+            'ino'     => 0,
+            'mode'    => 0,
+            'nlink'   => 0,
+            'uid'     => 0,
+            'gid'     => 0,
+            'rdev'    => 0,
+            'size'    => strlen($this->string),
+            'atime'   => 0,
+            'mtime'   => 0,
+            'ctime'   => 0,
             'blksize' => -1,
-            'blocks' => -1,
+            'blocks'  => -1,
         ];
     }
 
