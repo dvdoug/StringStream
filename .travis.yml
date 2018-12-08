@@ -6,8 +6,7 @@ matrix:
     - php: 7.1
       env: lowest=1
     - php: 7.2
-      env:
-        - csfixer=1
+      env: csfixer=1
     - php: 7.3
     - php: nightly
 
