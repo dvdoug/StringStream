@@ -1,13 +1,19 @@
 group: travis_latest
 language: php
 
+php:
+  - 7.3
+  - 7.2
+  - 7.1
+  - nightly
+
 matrix:
   include:
     - php: 7.1
       env: lowest=1
     - php: 7.2
       env: csfixer=1
-    - php: 7.3
+  allow_failures:
     - php: nightly
 
 cache:
