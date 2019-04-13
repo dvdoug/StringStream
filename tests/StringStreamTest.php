@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 class StringStreamTest extends TestCase {
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
       stream_wrapper_register('string', '\DVDoug\StringStream\StringStream');
     }
 
