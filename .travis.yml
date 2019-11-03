@@ -21,7 +21,6 @@ cache:
     - $HOME/.composer/cache
     - $HOME/.cache/composer
     - $HOME/.cache/opcache
-    -
 
 install:
   - phpenv config-rm xdebug.ini || true;

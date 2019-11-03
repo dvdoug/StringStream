@@ -65,8 +65,6 @@ class StringStream
      * @param string $aMode
      * @param int    $aOptions
      * @param string $aOpenedPath
-     *
-     * @return bool
      */
     public function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath): bool
     {
@@ -164,8 +162,6 @@ class StringStream
      * Write to stream.
      *
      * @param string $aData data to write
-     *
-     * @return int
      */
     public function stream_write($aData): int
     {
@@ -189,8 +185,6 @@ class StringStream
 
     /**
      * Return current position.
-     *
-     * @return int
      */
     public function stream_tell(): int
     {
@@ -199,8 +193,6 @@ class StringStream
 
     /**
      * Return if EOF.
-     *
-     * @return bool
      */
     public function stream_eof(): bool
     {
@@ -212,8 +204,6 @@ class StringStream
      *
      * @param int $aOffset
      * @param int $aWhence
-     *
-     * @return bool
      */
     public function stream_seek($aOffset, $aWhence): bool
     {
@@ -248,8 +238,6 @@ class StringStream
      * Truncate to given size.
      *
      * @param int $aSize
-     *
-     * @return bool
      */
     public function stream_truncate($aSize): bool
     {
@@ -264,8 +252,6 @@ class StringStream
 
     /**
      * Return info about stream.
-     *
-     * @return array
      */
     public function stream_stat(): array
     {
@@ -291,8 +277,6 @@ class StringStream
      *
      * @param string $aPath
      * @param array  $aOptions
-     *
-     * @return array
      */
     public function url_stat($aPath, $aOptions): array
     {
