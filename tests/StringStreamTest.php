@@ -230,4 +230,11 @@ class StringStreamTest extends TestCase
         self::assertEquals(7, strlen(stream_get_contents($binaryHandle)));
         self::assertEquals(6 + strlen(PHP_EOL), strlen(stream_get_contents($textHandle)));
     }
+
+    public function testRequire(): void
+    {
+        $text = require "string://<?php return 'foo';";
+
+        self::assertEquals('foo', $text);
+    }
 }

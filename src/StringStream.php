@@ -285,6 +285,11 @@ class StringStream
         return fstat($resource);
     }
 
+    public function stream_set_option(int $option, int $arg, int $arg2): bool
+    {
+        return false; // no options are supported
+    }
+
     /**
      * If we've seeked past the end of file, auto truncate.
      */
