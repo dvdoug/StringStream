@@ -6,8 +6,8 @@ at once, and can pre-initialise the contents.
 
 [![Build Status](https://travis-ci.org/dvdoug/StringStream.svg?branch=master)](https://travis-ci.org/dvdoug/StringStream) 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dvdoug/StringStream/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dvdoug/StringStream/?branch=master)
-[![Download count](https://img.shields.io/packagist/dt/dvdoug/StringStream.svg)](https://packagist.org/packages/dvdoug/StringStream)
-[![Download count](https://img.shields.io/packagist/v/dvdoug/StringStream.svg)](https://packagist.org/packages/dvdoug/StringStream)
+[![Download count](https://img.shields.io/packagist/dt/dvdoug/stringstream.svg)](https://packagist.org/packages/dvdoug/stringstream)
+[![Download count](https://img.shields.io/packagist/v/dvdoug/stringstream.svg)](https://packagist.org/packages/dvdoug/stringstream)
 
 Usage
 -----
