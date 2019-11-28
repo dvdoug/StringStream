@@ -61,12 +61,8 @@ class StringStream
 
     /**
      * Open stream.
-     * @param string $aPath
-     * @param string $aMode
-     * @param int    $aOptions
-     * @param string $aOpenedPath
      */
-    public function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath): bool
+    public function stream_open(string $aPath, string $aMode, int $aOptions, ?string &$aOpenedPath): bool
     {
         $this->string = substr($aPath, strpos($aPath, '://') + 3);
         $this->options = $aOptions;
@@ -141,12 +137,8 @@ class StringStream
 
     /**
      * Read from stream.
-     *
-     * @param int $aBytes number of bytes to return
-     *
-     * @return int|false
      */
-    public function stream_read($aBytes)
+    public function stream_read(int $aBytes): string
     {
         if ($this->read) {
             $read = substr($this->string, $this->position, $aBytes);
@@ -155,15 +147,13 @@ class StringStream
             return $read;
         }
 
-        return false;
+        return '';
     }
 
     /**
      * Write to stream.
-     *
-     * @param string $aData data to write
      */
-    public function stream_write($aData): int
+    public function stream_write(string $aData): int
     {
         if ($this->normaliseForWin) {
             $data = preg_replace('/(?<!\r)\n/', "\r\n", $aData);
@@ -201,11 +191,8 @@ class StringStream
 
     /**
      * Seek to new position.
-     *
-     * @param int $aOffset
-     * @param int $aWhence
      */
-    public function stream_seek($aOffset, $aWhence): bool
+    public function stream_seek(int $aOffset, int $aWhence): bool
     {
         switch ($aWhence) {
             case SEEK_SET:
@@ -236,10 +223,8 @@ class StringStream
 
     /**
      * Truncate to given size.
-     *
-     * @param int $aSize
      */
-    public function stream_truncate($aSize): bool
+    public function stream_truncate(int $aSize): bool
     {
         if (strlen($this->string) > $aSize) {
             $this->string = substr($this->string, 0, $aSize);
@@ -274,11 +259,8 @@ class StringStream
 
     /**
      * Return info about stream.
-     *
-     * @param string $aPath
-     * @param array  $aOptions
      */
-    public function url_stat($aPath, $aOptions): array
+    public function url_stat(string $aPath, int $aOptions): array
     {
         $resource = fopen($aPath, 'rb');
 
