@@ -18,43 +18,36 @@ class StringStream
 {
     /**
      * Content of stream.
-     * @var string
      */
-    private $string;
+    private string $string;
 
     /**
      * Whether this stream can be read.
-     * @var bool
      */
-    private $read;
+    private bool $read;
 
     /**
      * Whether this stream can be written.
-     * @var bool
      */
-    private $write;
+    private bool $write;
 
     /**
      * Whether this stream should have UNIX-style newlines converted to Windows-style.
-     * @var bool
      */
-    private $normaliseForWin = false;
+    private bool $normaliseForWin = false;
 
     /**
      * Options.
-     * @var int
      */
-    private $options;
+    private int $options;
 
     /**
      * Current position within stream.
-     * @var int
      */
-    private $position;
+    private int $position;
 
     /**
      * Context.
-     *
      * @var resource
      */
     public $context;

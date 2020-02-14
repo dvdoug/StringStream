@@ -8,6 +8,7 @@ return PhpCsFixer\Config::create()
         '@Symfony:risky' => true,
         '@PHP71Migration' => true,
         '@PHP71Migration:risky' => true,
+        '@PHP73Migration' => true,
         'concat_space' => ['spacing' => 'one'],
         'fopen_flags' => ['b_mode' => true],
         'native_function_invocation' => false,
