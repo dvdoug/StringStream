@@ -23,13 +23,6 @@ fclose($handle);
 
 ```
 
-
-
-Requirements
-------------
-
-* PHP 7.1 or higher
-
 License
 -------
 StringStream is MIT-licensed. 
