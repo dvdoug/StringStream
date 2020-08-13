@@ -237,4 +237,14 @@ class StringStreamTest extends TestCase
 
         self::assertEquals('foo', $text);
     }
+
+    public function testMultipleTemps(): void
+    {
+        $first = fopen('php://temp', 'r+b');
+        fwrite($first, 'hello');
+        $second = fopen('php://temp', 'rb');
+        $content = fread($second, 5);
+
+        self::assertEquals('', $content);
+    }
 }
