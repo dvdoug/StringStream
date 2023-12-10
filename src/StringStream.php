@@ -18,57 +18,44 @@ class StringStream
 {
     /**
      * Content of stream.
-     * @var string
      */
-    private $string;
+    private string $string;
 
     /**
      * Whether this stream can be read.
-     * @var bool
      */
-    private $read;
+    private bool $read;
 
     /**
      * Whether this stream can be written.
-     * @var bool
      */
-    private $write;
+    private bool $write;
 
     /**
      * Whether this stream should have UNIX-style newlines converted to Windows-style.
-     * @var bool
      */
-    private $normaliseForWin = false;
+    private bool $normaliseForWin = false;
 
     /**
      * Options.
-     * @var int
      */
-    private $options;
+    private int $options;
 
     /**
      * Current position within stream.
-     * @var int
      */
-    private $position;
+    private int $position;
 
     /**
      * Context.
-     *
      * @var resource
      */
     public $context;
 
     /**
      * Open stream.
-     * @param string $aPath
-     * @param string $aMode
-     * @param int    $aOptions
-     * @param string $aOpenedPath
-     *
-     * @return bool
      */
-    public function stream_open($aPath, $aMode, $aOptions, &$aOpenedPath): bool
+    public function stream_open(string $aPath, string $aMode, int $aOptions, ?string &$aOpenedPath): bool
     {
         $this->string = substr($aPath, strpos($aPath, '://') + 3);
         $this->options = $aOptions;
@@ -143,12 +130,8 @@ class StringStream
 
     /**
      * Read from stream.
-     *
-     * @param int $aBytes number of bytes to return
-     *
-     * @return int|false
      */
-    public function stream_read($aBytes)
+    public function stream_read(int $aBytes): string
     {
         if ($this->read) {
             $read = substr($this->string, $this->position, $aBytes);
@@ -157,17 +140,13 @@ class StringStream
             return $read;
         }
 
-        return false;
+        return '';
     }
 
     /**
      * Write to stream.
-     *
-     * @param string $aData data to write
-     *
-     * @return int
      */
-    public function stream_write($aData): int
+    public function stream_write(string $aData): int
     {
         if ($this->normaliseForWin) {
             $data = preg_replace('/(?<!\r)\n/', "\r\n", $aData);
@@ -189,8 +168,6 @@ class StringStream
 
     /**
      * Return current position.
-     *
-     * @return int
      */
     public function stream_tell(): int
     {
@@ -199,8 +176,6 @@ class StringStream
 
     /**
      * Return if EOF.
-     *
-     * @return bool
      */
     public function stream_eof(): bool
     {
@@ -209,13 +184,8 @@ class StringStream
 
     /**
      * Seek to new position.
-     *
-     * @param int $aOffset
-     * @param int $aWhence
-     *
-     * @return bool
      */
-    public function stream_seek($aOffset, $aWhence): bool
+    public function stream_seek(int $aOffset, int $aWhence): bool
     {
         switch ($aWhence) {
             case SEEK_SET:
@@ -246,12 +216,8 @@ class StringStream
 
     /**
      * Truncate to given size.
-     *
-     * @param int $aSize
-     *
-     * @return bool
      */
-    public function stream_truncate($aSize): bool
+    public function stream_truncate(int $aSize): bool
     {
         if (strlen($this->string) > $aSize) {
             $this->string = substr($this->string, 0, $aSize);
@@ -264,8 +230,6 @@ class StringStream
 
     /**
      * Return info about stream.
-     *
-     * @return array
      */
     public function stream_stat(): array
     {
@@ -288,17 +252,17 @@ class StringStream
 
     /**
      * Return info about stream.
-     *
-     * @param string $aPath
-     * @param array  $aOptions
-     *
-     * @return array
      */
-    public function url_stat($aPath, $aOptions): array
+    public function url_stat(string $aPath, int $aOptions): array
     {
         $resource = fopen($aPath, 'rb');
 
         return fstat($resource);
+    }
+
+    public function stream_set_option(int $option, int $arg, int $arg2): bool
+    {
+        return false; // no options are supported
     }
 
     /**

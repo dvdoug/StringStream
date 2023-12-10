@@ -3,20 +3,21 @@
 declare(strict_types=1);
 
 return PhpCsFixer\Config::create()
-    ->setRules(array(
+    ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
         '@PHP71Migration' => true,
         '@PHP71Migration:risky' => true,
+        '@PHP73Migration' => true,
         'concat_space' => ['spacing' => 'one'],
         'fopen_flags' => ['b_mode' => true],
         'native_function_invocation' => false,
         'phpdoc_separation' => false,
-    ))
+    ])
     ->setRiskyAllowed(true)
     ->setUsingCache(false)
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__ . '/src')
-            ->append(array(__FILE__))
+            ->append([__FILE__])
     );
